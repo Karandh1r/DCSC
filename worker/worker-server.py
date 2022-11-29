@@ -44,10 +44,15 @@ def callback(response_dict):
         sql = "INSERT INTO tracks (name, artist, album_name, url) VALUES (%s, %s, %s, %s)"
         log_debug('saving the reponse',response_dict)
         response = json.loads(response_dict)
-        val = (response[0][0], response[0][1], response[0][2], response[0][3])
-        mycursor.execute(sql, val)
+        print(response)
+        list_values = []
+        for index in range(len(response)):
+            dict_key = str(index)
+            list_values.append((response[dict_key][0],response[dict_key][1],response[dict_key][2],response[dict_key][3]))
+        mycursor.executemany(sql, list_values)
         mydb.commit()  
     except Exception as exp:
+        print(f"Exception occurred => {exp}")
         log_info(f"Exception raised in log loop: {str(exp)}")
 
 while True:

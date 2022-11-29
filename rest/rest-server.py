@@ -57,7 +57,7 @@ def voice_based_search():
         for idx, track in enumerate(results['tracks']['items']):
             print(idx, track['name'], track['artists'][0]['name'], track['album']['name'], track['external_urls']['spotify'])
             response[idx] = [track['name'], track['artists'][0]['name'], track['album']['name'], track['external_urls']['spotify']] 
-        redisClient.lpush(spotifyQueue,str(response)) 
+        redisClient.lpush(spotifyQueue,json.dumps(response)) 
         return Response(response =  jsonpickle.encode(response), status = 200, mimetype = "application/json")
     except Exception as exp:
         log_info(f"error in getTrack => exception {exp}")
