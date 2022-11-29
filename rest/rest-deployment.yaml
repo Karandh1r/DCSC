@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+#
+# Create a deployment ( https://kubernetes.io/docs/concepts/workloads/controllers/deployment/ )
+#
+kind: Deployment
+metadata:
+  name: rest-deployment
+spec:
+  replicas: 1
+  # The .spec.selector field defines how the Deployment finds which Pods to manage.
+  # In this case, you simply select a label that is defined in the Pod template (app: blog).
+  # However, more sophisticated selection rules are possible,
+  # as long as the Pod template itself satisfies the rule.
+  selector:
+    matchLabels:
+      app: rest
+  template:
+    metadata:
+      labels:
+        app: rest
+    spec:
+      containers:
+      - name: rest
+        image: karandhir/spotify-rest:v1
+        ports:
+        - containerPort: 5000
+        env:
+          - name: FLASK_PORT
+            value: "5000"
+          - name : REDIS_HOST
+            value : redis
+          - name : REDIS_PORT 
+            value : "6379" 
+          - name : CLIENT_ID
+            value : "01f4d3b546774e06a1ceb4713fed7664"
+          - name : CLIENT_SECRET
+            value : "5ed9f86958e24976bef85a190f86a3a0"    
