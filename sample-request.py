@@ -39,6 +39,6 @@ for wav in glob.glob("data/*.wav"):
         verbose=True
         )
     print(f"Cache from server is")
-    #mkReq(requests.get, "apiv1/queue", data=None)
+    #mkReq(requests.get, "spotify/artist/Wallows", data=None)
 
 sys.exit(0)

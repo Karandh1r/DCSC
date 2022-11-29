@@ -34,4 +34,6 @@ spec:
           - name : CLIENT_ID
             value : "01f4d3b546774e06a1ceb4713fed7664"
           - name : CLIENT_SECRET
-            value : "5ed9f86958e24976bef85a190f86a3a0"    
+            value : "5ed9f86958e24976bef85a190f86a3a0" 
+          - name : MYSQL_HOST
+            value : mysql     

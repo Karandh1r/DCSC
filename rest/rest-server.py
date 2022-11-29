@@ -7,6 +7,7 @@ import redis
 import json
 import io
 import spotipy
+import mysql.connector
 from spotipy.oauth2 import SpotifyClientCredentials
 import speech_recognition as sr
 
@@ -14,6 +15,7 @@ redisHost = os.getenv("REDIS_HOST") or "localhost"
 redisPort = os.getenv("REDIS_PORT") or 6379
 client_id = os.getenv('CLIENT_ID') or "01f4d3b546774e06a1ceb4713fed7664"
 client_secret = os.getenv('CLIENT_SECRET') or "5ed9f86958e24976bef85a190f86a3a0"
+sqlHost = os.getenv("MYSQL_HOST") or "mysql"
 
 print(f"Connecting to redis({redisHost} : {redisPort})")
 redisClient = redis.StrictRedis(host=redisHost,port=redisPort,db=0)
@@ -65,12 +67,29 @@ def voice_based_search():
         resp_pickled = jsonpickle.encode("Speech was not recognized, or no valid input was provided")  
         return Response(response = resp_pickled, status = 404, mimetype = "application/json")       
 
-app.route('/spotify/artist/<string:artistName>',methods=['GET'])
-def searchByArtist():
-    pass
-
-app.route('/spotify/song/<string:songName>',methods=['GET'])
-def searchBySongName():
-    pass
-
+@app.route('/spotify/artist/<string:searchquery>',methods=['GET'])
+def searchByArtist(searchquery):
+    try:
+        mydb = mysql.connector.connect(
+                host=sqlHost,
+                user="root",
+                password="password"
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute("USE spotifydb")
+        query = "SELECT * FROM tracks WHERE artist='{}'".format(searchquery)
+        mycursor.execute(query)
+        results = mycursor.fetchall()
+        info = "Songs found by " + searchquery + ": Track Name: " + results[0][1] + ", Artist Name: " + results[0][2] + ", Album Name: " + results[0][3] + ", Spotify URL: " + results[0][4]
+        print(info)
+        response = {
+            "Matching Tracks": info
+        }   
+        resp_pickled = jsonpickle.encode(response)
+        return Response(response = resp_pickled, status = 200, mimetype = "application/json")       
+    except Exception as exp:
+        log_info(f"error while getting the artist or song {exp}")
+        resp_pickled = jsonpickle.encode("error received while getting the search requested")  
+        return Response(response = resp_pickled, status = 404, mimetype = "application/json") 
+             
 app.run(host="0.0.0.0", port=5000)
