@@ -1,4 +1,5 @@
 from flask import Flask, request, Response
+from flask_cors import CORS
 import sys, os
 import jsonpickle
 import platform
@@ -35,6 +36,7 @@ def log_info(message, key=infoKey):
     redisClient.lpush('logging', f"{infoKey}:{message}")   
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 log_debug('Creating REST frontend')
 
 @app.route('/', methods=['GET'])
@@ -80,10 +82,18 @@ def searchByArtist(searchquery):
         query = "SELECT * FROM tracks WHERE artist='{}'".format(searchquery)
         mycursor.execute(query)
         results = mycursor.fetchall()
-        info = "Songs found by " + searchquery + ": Track Name: " + results[0][1] + ", Artist Name: " + results[0][2] + ", Album Name: " + results[0][3] + ", Spotify URL: " + results[0][4]
-        print(info)
+        response_list = []
+        for index in range(len(results)):
+            new_dict = {}
+            new_dict['track_name'] = results[index][1]
+            new_dict['artist_name'] = results[index][2]
+            new_dict['album_name'] = results[index][3]
+            new_dict['spotify_url'] = results[index][4]
+            response_list.append(new_dict)
+        #info = "Songs found by " + searchquery + ": Track Name: " + results[0][1] + ", Artist Name: " + results[0][2] + ", Album Name: " + results[0][3] + ", Spotify URL: " + results[0][4]
+        #print(info)
         response = {
-            "Matching Tracks": info
+            "tracks": response_list
         }   
         resp_pickled = jsonpickle.encode(response)
         return Response(response = resp_pickled, status = 200, mimetype = "application/json")       
