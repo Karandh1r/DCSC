@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "ngx-toastr": "^16.0.1",
+    "recorder-js": "^1.0.7",
+    "recordrtc": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/recordrtc": "^5.6.10"
+  }
+}

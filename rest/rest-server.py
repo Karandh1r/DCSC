@@ -45,11 +45,10 @@ def hello():
 
 @app.route('/spotify/voice', methods=['POST'])
 def voice_based_search():
+    print('request:',request.data)
     try:
-        data = request.get_json()
-        decoded_file = base64.b64decode(data['wav'])
         rec = sr.Recognizer()
-        audio_file = sr.AudioFile(io.BytesIO(decoded_file))
+        audio_file = sr.AudioFile(io.BytesIO(request.data))
         with audio_file as source:
             audio = rec.record(source)
         sentence = rec.recognize_google(audio)

@@ -1,0 +1,13 @@
+<div class="card" style="width: 31rem">
+  <div class="card-body">
+      <div class="progress form-group" *ngIf="progress > 0">
+          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
+          </div>
+      </div>
+      <div mat-dialog-actions>
+        <input type="file" name="fileUpload" (change)="onFileChange($event)" #myInput/>
+        <button (click)="upload()" mat-raised-button [disabled] = "!fileIsUploaded()"> Upload File</button>
+        <button mat-button mat-dialog-close>No Thanks</button>
+      </div>
+  </div>
+</div>
