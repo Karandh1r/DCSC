@@ -1,13 +1,12 @@
 <div class="card" style="width: 31rem">
   <div class="card-body">
-      <div class="progress form-group" *ngIf="progress > 0">
-          <div class="progress-bar progress-bar-striped bg-success" role="progressbar" [style.width.%]="progress">
-          </div>
+      <div class="parent_div">
+          <h1 class="bolded">Upload the file in Wav format</h1>
       </div>
       <div mat-dialog-actions>
         <input type="file" name="fileUpload" (change)="onFileChange($event)" #myInput/>
-        <button (click)="upload()" mat-raised-button [disabled] = "!fileIsUploaded()"> Upload File</button>
-        <button mat-button mat-dialog-close>No Thanks</button>
+        <button (click)="upload()" color="primary" mat-raised-button [disabled] = "!fileIsUploaded()"> Upload File</button>
+        <button mat-raised-button mat-dialog-close color="primary">No Thanks</button>
       </div>
   </div>
 </div>
