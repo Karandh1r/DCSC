@@ -26,3 +26,4 @@ kubectl -n spotify apply -f mysql/mysql-service.yaml
 
 kubectl port-forward --address 0.0.0.0 service/redis 6379:6379 &
 kubectl port-forward --address 0.0.0.0 service/mysql 3306:3306 &
+kubectl port-forward --address 0.0.0.0 service/rest-svc 80:80 &

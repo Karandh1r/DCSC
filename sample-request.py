@@ -6,7 +6,6 @@ import base64
 import glob
 
 REST = os.getenv("REST") or "localhost"
-
 def mkReq(reqmethod, endpoint, data, verbose=True):
     print(f"Response to http://{REST}/{endpoint} request is {type(data)}")
     jsonData = jsonpickle.encode(data)
@@ -31,7 +30,7 @@ for wav in glob.glob("data/*.wav"):
         data={
             "wav": base64.b64encode( open(wav, "rb").read() ).decode('utf-8'),
             "callback": {
-                "url": "http://localhost:5000",
+                "url": "http://127.0.0.1:5000",
                 "data": {"wav": wav, 
                          "data": "to be returned"}
             }
@@ -39,6 +38,6 @@ for wav in glob.glob("data/*.wav"):
         verbose=True
         )
     print(f"Cache from server is")
-    #mkReq(requests.get, "spotify/artist/Wallows", data=None)
+    mkReq(requests.get, "spotify/artist/Wallows", data=None)
 
 sys.exit(0)

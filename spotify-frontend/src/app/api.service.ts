@@ -12,7 +12,7 @@ export class ApiService {
     }
     getSongdata(search:any){
       return this.http.get('http://localhost/spotify/artist/'+ search);
-    } 
+    }
     fileUpload(file : any):Observable<any> {
       let headers = new HttpHeaders({
         'FileName': file.name
@@ -22,7 +22,7 @@ export class ApiService {
         headers,
         reportProgress : true,
         observe: 'events'
-  
+
       })
     }
 }

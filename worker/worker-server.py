@@ -34,6 +34,7 @@ log_debug(f"Connecting to redis({redisHost} : {redisPort})")
 
 def callback(response_dict):
     try:
+        log_debug("Inside the callback method")
         mydb = mysql.connector.connect(host=sqlHost,
         user="root",
         password="password")
@@ -62,6 +63,8 @@ while True:
         log_debug(f"contents worker {work}")
         string_key = work[0].decode('utf-8')
         response_dict = work[1].decode('utf-8')
+        log_debug('string key :',string_key)
+        log_debug('response_dict :', response_dict)
         if string_key == 'toWorker':
             callback(response_dict)
     except Exception as exp:
